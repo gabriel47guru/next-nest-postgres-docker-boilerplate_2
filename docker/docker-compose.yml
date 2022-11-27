@@ -10,7 +10,7 @@ services:
       - POSTGRES_PASSWORD=${TYPEORM_PASSWORD}
       - POSTGRES_DB=${TYPEORM_DATABASE}
     volumes:
-      - /pgdata:/var/lib/postgresql/data
+      - ./tmp/pgdata:/var/lib/postgresql/data
     ports:
       - "5432:5432"
   backend:
@@ -30,15 +30,15 @@ services:
       - TYPEORM_PASSWORD=${TYPEORM_PASSWORD}
       - TYPEORM_DATABASE=${TYPEORM_DATABASE}
       - TYPEORM_PORT=${TYPEORM_PORT}
-      - TYPEORM_HOST=database
-  # frontend:
-  #   container_name: next-js
-  #   build:
-  #     context: ../frontend
-  #   depends_on:
-  #     - database
-  #     - backend
-  #   restart: unless-stopped
-  #   ports:
-  #     - "80:80"
+      - TYPEORM_HOST=postgresql
+  frontend:
+    container_name: next-js
+    build:
+      context: ../frontend
+    depends_on:
+      - database
+      - backend
+    restart: unless-stopped
+    ports:
+      - "80:80"
 # //TODO: Доделать файл до нормального состояния
